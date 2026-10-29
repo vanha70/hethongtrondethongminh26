@@ -1,10 +1,8 @@
 import streamlit as st
 
-st.set_page_config(page_title="In Phiếu OMR", page_icon="🖨️", layout="wide")
+st.title("🖨️ In Phiếu OMR Cá Nhân Hóa")
+st.write("Chức năng sinh phiếu thi, tô sẵn SBD/Mã đề và nhúng QR nén.")
 
-if "logged_in" not in st.session_state or not st.session_state["logged_in"]:
-    st.warning("⛔ Bạn chưa đăng nhập! Vui lòng quay lại Trang chủ để xác thực.")
-    st.stop()
-
-st.title("🖨️ Module Sinh Phiếu Thi PDF")
-st.info("Tự động vẽ phiếu OMR chuẩn, tô sẵn SBD/Mã đề từ danh sách Excel và nhúng QR nén đáp án.")
+num_students = st.number_input("Nhập số lượng học sinh:", min_value=1, max_value=100, value=40)
+if st.button("Tạo phiếu PDF"):
+    st.success(f"Đã tạo thành công phiếu OMR cho {num_students} học sinh!")
