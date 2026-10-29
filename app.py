@@ -1,43 +1,36 @@
 import streamlit as st
 
-st.set_page_config(page_title="Hệ Thống Khảo Thí Hóa Học", page_icon="🏫", layout="wide")
+# --- CẤU HÌNH BẢO MẬT ĐĂNG NHẬP ---
+st.set_page_config(page_title="Hệ thống Khảo thí Hóa học", page_icon="🧪", layout="wide")
 
-if "logged_in" not in st.session_state:
-    st.session_state["logged_in"] = False
+def check_password():
+    if "password_correct" not in st.session_state:
+        st.session_state["password_correct"] = False
 
-if not st.session_state["logged_in"]:
-    st.markdown(
-        """
-        <style>
-            [data-testid="stSidebar"] { display: none; }
-        </style>
-        """, 
-        unsafe_allow_html=True
-    )
-    
-    st.title("🔒 Cổng Đăng Nhập Giáo Viên")
-    st.info("Hệ thống khảo thí Hóa học độc quyền - Thầy Nguyễn Văn Hà.")
-    
-    mat_khau_nhap = st.text_input("Nhập mật khẩu truy cập hệ thống:", type="password")
-    
-    if st.button("Đăng nhập", type="primary"):
-        # Mật khẩu mặc định hoặc lấy từ secrets
-        pwd = st.secrets.get("passwords", {}).get("admin_password", "MatKhauGiaoVien2026")
-        if mat_khau_nhap == pwd:
-            st.session_state["logged_in"] = True
-            st.success("Đăng nhập thành công! Hệ thống đang tải...")
+    if st.session_state["password_correct"]:
+        return True
+
+    st.subheader("🔐 Đăng nhập hệ thống khảo thí")
+    password = st.text_input("Nhập mật khẩu giáo viên:", type="password")
+    if st.button("Đăng nhập"):
+        # Lấy mật khẩu từ secrets.toml
+        admin_pwd = st.secrets.get("passwords", {}).get("admin_password", "MatKhauGiaoVien2026")
+        if password == admin_pwd:
+            st.session_state["password_correct"] = True
             st.rerun()
         else:
-            st.error("Sai mật khẩu! Vui lòng thử lại.")
-else:
-    st.title("👋 Chào mừng Thầy Nguyễn Văn Hà và các Thầy Cô")
-    st.markdown("""
-    **Vui lòng chọn chức năng ở thanh menu bên trái để bắt đầu làm việc:**
-    * 🔀 **Trộn Đề:** Xáo trộn mã đề, giữ nguyên định dạng MathType, tạo QR đáp án.
-    * 🖨️ **In Phiếu PDF:** Sinh phiếu OMR cá nhân hóa, tô sẵn SBD/Mã đề và nhúng QR nén.
-    * 📸 **Chấm Thi:** Quét phiếu OMR qua camera, tự động đọc QR, chấm điểm và đồng bộ Google Sheets.
-    """)
-    
-    if st.button("Đăng xuất"):
-        st.session_state["logged_in"] = False
-        st.rerun()
+            st.error("❌ Mật khẩu chưa chính xác!")
+    return False
+
+if not check_password():
+    st.stop()
+
+# --- ĐỊNH NGHĨA CÁC TRANG ĐA TRANG (MULTIPAGE) ---
+pg = st.navigation([
+    st.Page("app.py", title="Trang chủ", icon="🏠"),
+    st.Page("1_Trộn_Đề.py", title="Trộn Đề Hóa học", icon="🔀"),
+    st.Page("2_In_Phiếu_PDF.py", title="In Phiếu OMR", icon="🖨️"),
+    st.Page("3_Chấm_Thi.py", title="Chấm Thi tự động", icon="📷"),
+])
+
+pg.run()
