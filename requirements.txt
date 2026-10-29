@@ -1,12 +1,6 @@
-streamlit
+streamlit>=1.35.0
 pandas
-openpyxl
-qrcode
-Pillow
+reportlab
 opencv-python-headless
 numpy
-imutils
-gspread
-pyzbar
-plotly
 google-genai
