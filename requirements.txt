@@ -1,0 +1,12 @@
+streamlit
+pandas
+openpyxl
+qrcode
+Pillow
+opencv-python-headless
+numpy
+imutils
+gspread
+pyzbar
+plotly
+google-genai
