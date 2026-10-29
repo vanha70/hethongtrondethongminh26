@@ -19,6 +19,8 @@ def check_password():
             st.rerun()
         else:
             st.error("❌ Mật khẩu chưa chính xác!")
+        return False
+
     return False
 
 if not check_password():
